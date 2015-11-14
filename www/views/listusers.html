@@ -1,0 +1,35 @@
+<div>
+<h3>User List</h3>
+<table class="full-width">
+  <tr>
+    <th>actions</th>
+    <th>Name</th>
+    <th>Email Address</th>
+    <th>Rider Type</th>
+    <th>Category</th>
+  </tr>
+  <tr data-ng-repeat="user in users | orderBy:'email'">
+    <td>
+      <button data-ng-click="getPlan()">details</button>
+    </td>
+    <td>
+      {{user.name}}
+    </td>
+    <td>
+      {{user.email | lowercase}}
+    </td>
+    <td>
+      {{user.type}}
+    </td>
+    <td>
+      {{user.category}}
+    </td>
+  </tr>
+</table>
+<div class="visible-{{summaryVisible}}">
+  <button data-ng-click="clearSummary()" >clear summary</button>
+  <div>
+    {{userSummary}}
+  </div>
+</div>
+</div>
