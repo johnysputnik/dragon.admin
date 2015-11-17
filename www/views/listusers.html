@@ -29,7 +29,68 @@
 <div class="visible-{{summaryVisible}}">
   <button data-ng-click="clearSummary()" >clear summary</button>
   <div>
-    {{userSummary}}
+    <h2>Training Plan for {{userSummary.summary.year}}</h2>
+    <h3>Event Statistics</h3>
+    <ul class="list-unstyled">
+      <li>Number of races : {{userSummary.stats.racecount}}</li>
+      <li>Average race distance : {{userSummary.stats.avgdistance}}</li>
+      <li>Maximum race distance : {{userSummary.stats.maxdistance}}</li>
+      <li>Minimum race distance : {{userSummary.stats.mindistance}}</li>
+    </ul>
+    <h3>Training Phases</h3>
+    <table class="full-width">
+      <tr>
+        <th>Phase</th>
+        <th>Start</th>
+        <th>End</th>
+      </tr>
+      <tr data-ng-repeat="phase in userSummary.phases | orderBy:'start'" class="row-{{phase.type}}">
+        <td>
+          {{phase.type}}
+        </td>
+        <td>
+          {{phase.start}}
+        </td>
+        <td>
+          {{phase.end}}
+        </td>
+      </tr>
+    </table>
+    <h3>Calendar</h3>
+    <table class="full-width">
+      <tr>
+        <th>Day</th>
+        <th>Description</th>
+        <th>Type</th>
+        <th>Distance</th>
+        <th>Time</th>
+      </tr>
+      <tr data-ng-repeat="day in userSummary.days | orderBy:'week'" class="row-{{day.type}} row-{{day.phase}}">
+        <td>
+          {{day.week}} - {{day.day}}
+        </td>
+        <td>
+          {{day.description}}
+        </td>
+        <td>
+          {{day.type}}
+        </td>
+        <td>
+          {{day.distance}}
+        </td>
+        <td>
+          {{day.time}}
+        </td>
+      </tr>
+    </table>
+    <h3>Warnings</h3>
+    <ul class="list-unstyled">
+      <li class="warning" data-ng-repeat="warning in userSummary.warnings">{{warning.message}}</li>
+    </ul>
+    <h3>Raw Data</h3>
+    <pre>
+{{formattedUserSummary}}
+    </pre>
   </div>
 </div>
 </div>

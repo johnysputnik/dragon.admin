@@ -7,34 +7,37 @@ var dragonAdmin = angular.module('dragonAdmin', [
 
 // Factories
 
-var dragonAdminFactory = function() {
+var dragonAdminFactory = function($http) {
     var factory = {};
 
-    factory.getUsers = function(){
+    factory.getUsers = function(f){
+
         var users = [
             {
                 name: 'Test Racer',
                 email: 'test@jsolutions.co.uk',
                 category: 3,
                 type: 'road'
-            },
-            {
-                name: 'John Cumming',
-                email: 'john@jsolutions.co.uk',
-                category: 0,
-                type: 'sportive'
             }];
         return users;
     };
 
-    factory.getPlan = function() {
-        return {test: "test"};
+    factory.getPlan = function(f) {
+
+        $http({
+            method: 'GET',
+            url: '/api/'
+        }).then(function(response) {
+            f(response);
+        }, function (response) {
+            f({test: false});
+        });
     }
 
     return factory;
 };
 
-dragonAdmin.factory('dragonAdminFactory', dragonAdminFactory);
+dragonAdmin.factory('dragonAdminFactory', ['$http', dragonAdminFactory]);
 
 // Controllers
 
@@ -46,14 +49,16 @@ var dragonUserController = function($scope, dragonAdminFactory){
     $scope.users = dragonAdminFactory.getUsers();
 
     $scope.getPlan = function(){
-        $scope.userSummary = dragonAdminFactory.getPlan();
-        $scope.summaryVisible = true;
+        dragonAdminFactory.getPlan(function(data) {
+            $scope.userSummary = data.data;
+            $scope.summaryVisible = true;
+            $scope.formattedUserSummary = JSON.stringify(data.data, null, 1);
+        });
     };
 
     $scope.clearSummary = function(){
         $scope.userSummary = {};
         $scope.summaryVisible = false;
-
     };
 };
 
@@ -62,8 +67,11 @@ dragonAdmin.controller('dragonUserController', ['$scope', 'dragonAdminFactory', 
 
 // Config
 
-dragonAdmin.config(['$routeProvider',
-                    function($routeProvider) {
+dragonAdmin.config(['$routeProvider', '$logProvider',
+                    function($routeProvider, $logProvider) {
+
+                        $logProvider.debugEnabled(true);
+
                         $routeProvider.
                             when('/summary',{
                                 controller: 'dragonUserController',

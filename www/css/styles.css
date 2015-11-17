@@ -12,3 +12,24 @@ div#main {
 .visible-false {
     display: none;
 }
+
+.warning {
+    color: red;
+}
+
+.row-peak {
+    background-color: rgb(255, 180, 180);
+}
+
+.row-rest {
+    background-color: rgb(180, 255, 180);
+}
+
+.row-race {
+    font-weight: bold;
+}
+
+.row-rest {
+    font-style: italic;
+}
+
